@@ -40,51 +40,41 @@ import com.relevantcodes.extentreports.LogStatus;
 public class CommonUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUtility.class);
-	public static String getProperty(String propertyName)  {
-		Properties p = new Properties();
-		String property = null;
-		FileReader reader = null;
-		try {
-			reader = new FileReader(EnvironmentVariables.projectPropertiesPath);
+	/**
+	 * Retrieves a property value from a properties file.
+	 *
+	 * @param propertyName the name of the property to retrieve
+	 * @return the value of the property, or null if an error occurred
+	 */
+	public static String getProperty(String propertyName) {
+		Properties properties = new Properties();
+		String propertyValue = null;
 
-			p.load(reader);
-			property = p.getProperty(propertyName);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		try (FileReader reader = new FileReader(EnvironmentVariables.projectPropertiesPath)) {
+			properties.load(reader);
+			propertyValue = properties.getProperty(propertyName);
 		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			logger.error("Error while reading property: " + propertyName, e);
 		}
-		return property;
+
+		return propertyValue;
 	}
-	public void setProperty(String propertyName,String propertyValue) throws IOException {
-		Properties p = new Properties();
-		try {
-			p.setProperty(propertyName,propertyValue);  			  
-			p.store(new FileWriter("info.properties"),"Javatpoint Properties Example");  
+	/**
+	 * Sets a property value in a properties file.
+	 *
+	 * @param propertyName the name of the property to set
+	 * @param propertyValue the value to set the property to
+	 */
+public void setProperty(String propertyName, String propertyValue) {
+    Properties p = new Properties();
+    p.setProperty(propertyName, propertyValue);
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		} 
-	}
+    try (FileWriter writer = new FileWriter("info.properties")) {
+        p.store(writer, null);
+    } catch (IOException e) {
+        logger.error("Error while setting property: " + propertyName, e);
+    }
+}
 	
 
 	public String getCorrespondingFieldValue(String ColumnName,String fieldName,String [][] array) {
