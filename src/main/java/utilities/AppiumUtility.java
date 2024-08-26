@@ -47,7 +47,7 @@ public class AppiumUtility {
 	 * @param y
 	 *            - y axis coordinate
 	 */
-	public void doubleTapAtLocation(AndroidDriver<WebElement> driver, int x, int y) {
+	public void doubleTapAtLocation(AndroidDriver driver, int x, int y) {
 		TouchAction touchAction = new TouchAction(driver);
 		touchAction.tap(PointOption.point(x, y)).perform();
 		touchAction.tap(PointOption.point(x, y)).perform();
