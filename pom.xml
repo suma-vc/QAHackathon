@@ -131,9 +131,6 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.4.1</version>
-            <configuration>
-                <mainClass></mainClass>
-            </configuration>
         </plugin>
 
         <plugin>
