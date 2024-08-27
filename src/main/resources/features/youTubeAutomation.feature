@@ -16,7 +16,7 @@ Feature: Youtube Automation
 Scenario Outline: Youtube Automation for the QA Hackathon 
 	Given User launches the browser "<browser>" 
 	When user navigates to the website "https://www.youtube.com" 
-	And Search for "step-inforum" 
+	And Search for "step-in forum"
 	And Open "step-in forum" channel 
 	And Navigate to "Videos" tab 
 	And Make API call to get video name 
