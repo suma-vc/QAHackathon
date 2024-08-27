@@ -61,7 +61,7 @@ public class LoggerUtility {
 	 * @param msg  - Message
 	 * @param driver - WebDriver
 	 */
-	public void logPass(ExtentTest logger,String msg,WebDriver driver)
+	public static void logPass(ExtentTest logger,String msg,WebDriver driver)
 	{
 		String screeshotPath = SeleniumUtility.captureScreenshot(driver);
 		String image = logger.addScreenCapture(screeshotPath);
@@ -73,7 +73,7 @@ public class LoggerUtility {
 	 * @param msg  - Message
 	 * @param driver - WebDriver
 	 */
-	public void logInfo(ExtentTest logger,String msg,WebDriver driver)
+	public static void logInfo(ExtentTest logger,String msg,WebDriver driver)
 	{
 		String screeshotPath = SeleniumUtility.captureScreenshot(driver);
 		String image = logger.addScreenCapture(screeshotPath);
@@ -85,7 +85,7 @@ public class LoggerUtility {
 	 * @param msg  - Message
 	 * @param driver - WebDriver
 	 */
-	public void logFail(ExtentTest logger,String msg, WebDriver driver)
+	public static void logFail(ExtentTest logger,String msg, WebDriver driver)
 	{
 		String screeshotPath = SeleniumUtility.captureScreenshot(driver);
 		String image = logger.addScreenCapture(screeshotPath);		

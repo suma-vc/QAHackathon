@@ -13,10 +13,19 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import pageObjects.YouTubePageObjects;
 import utilities.CommonUtility;
+
+import utilities.Logger_v5Utility;
 
 import com.google.gson.JsonArray;
 import java.io.File;
@@ -35,7 +44,32 @@ import java.nio.charset.StandardCharsets; // Added import statement
 
 
 public class YouTubeAutomation {
+	
+	public static ExtentSparkReporter extentSparkReporter;
+	public static ExtentTest logger;
+	
+	public static ExtentReports extentReports;
+
+		
+		
+	
+	
     public static void main(String[] args) {
+    	
+    	 extentSparkReporter  = new ExtentSparkReporter(System.getProperty("user.dir") + "/test-output/extentReport.html");
+         extentReports = new ExtentReports();
+         extentReports.attachReporter(extentSparkReporter);
+    	
+    	  //configuration items to change the look and feel
+        //add content, manage tests etc
+        extentSparkReporter.config().setDocumentTitle("YouTube Automation Report");
+        extentSparkReporter.config().setReportName("YouTubeAutomation Report");
+        extentSparkReporter.config().setTheme(Theme.STANDARD);
+        extentSparkReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
+        
+    
+		logger = extentReports.createTest("YouTubeAutomation");
+    
     	CommonUtility util=new CommonUtility();
     	
         System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
@@ -50,30 +84,31 @@ public class YouTubeAutomation {
         try {
             // Step 1: Open YouTube
             driver.get("https://www.youtube.com");
-            driver.manage().window().maximize();            
+            driver.manage().window().maximize();      
+            Logger_v5Utility.logPass(logger, "YouTube Url opened");
             // Step 2: Search for 'step-inforum'
-            WebElement searchBox = driver.findElement(By.name("search_query"));
+            WebElement searchBox = driver.findElement(YouTubePageObjects.searchBox);
             searchBox.sendKeys("step-inforum");
             searchBox.sendKeys(org.openqa.selenium.Keys.RETURN);
-            
+            Logger_v5Utility.logPass(logger, "Search for 'step-inforum' is done");
             // Step 3: Open 'step-in forum' channel
-            WebElement channelLink = driver.findElement(By.partialLinkText("STeP-IN Forum"));
+            WebElement channelLink = driver.findElement(YouTubePageObjects.channelLink);
             channelLink.click();
-            
+            Logger_v5Utility.logPass(logger, "'step-in forum' channel opened");
             // Step 4: Navigate to 'Videos' tab
-            WebElement videosTab = driver.findElement(By.xpath("//div[text()=\"Videos\"]"));
+            WebElement videosTab = driver.findElement(YouTubePageObjects.videoTab);
             videosTab.click();
-            
+            Logger_v5Utility.logPass(logger, "Navigated to 'Videos' tab");
             // Step 5: Make API call to get video name
             String apiUrl = "http://<LAB IP>/video";
            // String videoName = getVideoName(apiUrl);
              String videoName = "Panel Discussion - Role of Software in Mobility";
-            
+             Logger_v5Utility.logPass(logger, "video name recieved: "+videoName);
             
             // Step 6: Locate the video by scrolling
             boolean videoFound = false;
             while (!videoFound) {
-                List<WebElement> videos = driver.findElements(By.id("video-title-link"));
+                List<WebElement> videos = driver.findElements(YouTubePageObjects.videoTitles);
                 for (WebElement video : videos) {
                     if (video.getAttribute("title").contains(videoName)) {
                         video.getLocation(); // Scroll into view
@@ -87,6 +122,7 @@ public class YouTubeAutomation {
                         File screenshot = ((org.openqa.selenium.TakesScreenshot) driver).getScreenshotAs(org.openqa.selenium.OutputType.FILE);
                         String date= util.generateDate();
                         Files.copy(screenshot.toPath(), Paths.get("screenshot.png"),StandardCopyOption.REPLACE_EXISTING);
+                        Logger_v5Utility.logPass(logger, "Located the video by scrolling",driver);
                         
                         // Step 8: Click on the video
                         video.click();
@@ -99,22 +135,22 @@ public class YouTubeAutomation {
                     ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("window.scrollBy(0, window.innerHeight);");
                 }
             }
-            
+            Logger_v5Utility.logPass(logger, "Clicked on the video");
             // Step 9: Change the video quality to 360p
-            WebElement settingsButton = driver.findElement(By.xpath("//button[@title='Settings']"));
-            settingsButton.click();
-            WebElement qualityMenu = driver.findElement(By.xpath("//div[contains(text(), 'Quality')]"));
-            qualityMenu.click();
+         driver.findElement(YouTubePageObjects.settingsbtn).click();
+          
+          driver.findElement(YouTubePageObjects.qualityMenu).click();
+           
             Thread.sleep(2000);
-            WebElement quality360p = driver.findElement(By.xpath("//span[text()='360p']"));
-            quality360p.click();
-            
+           driver.findElement(YouTubePageObjects.quality360p).click();
+         
+            Logger_v5Utility.logPass(logger, " Changed the video quality to 360p");
             // Step 10: Get and list names of all upcoming videos
-            List<WebElement> upcomingVideos = driver.findElements(By.id("video-title"));
+            List<WebElement> upcomingVideos = driver.findElements(YouTubePageObjects.upComingVideoTitles);
             List<String> upcomingVideoNames = upcomingVideos.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
-            
+            Logger_v5Utility.logPass(logger, "Recieved list names of all upcoming videos");
             // Step 11: Write the data to JSON file
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("team", "team-name");
@@ -128,21 +164,27 @@ public class YouTubeAutomation {
             FileOutputStream fos = new FileOutputStream("data.json");
             fos.write(new Gson().toJson(jsonObject).getBytes());
             fos.close();
-            
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(jsonObject);
+            Logger_v5Utility.logPassMarkupJSON(logger, "jsonObject : "+"<textarea rows='20' cols='40' style='border:none;'>"+json+"</textarea>");
+            Logger_v5Utility.logPassMarkupJSON(logger, json);
             // Step 12: Post/upload file to server
             String uploadUrl = "http://<LAB IP>/upload";
-            String uploadResponse = uploadFile(uploadUrl, "data.json");
-            
+        //    String uploadResponse = uploadFile(uploadUrl, "data.json");
+     
             // Step 13: Validate the file upload
             String resultUrl = "http://<LAB IP>/result";
-            JsonObject result = validateUpload(resultUrl, uploadResponse);
-            System.out.println(result);
-            
+         //   JsonObject result = validateUpload(resultUrl, uploadResponse);
+           // System.out.println(result);
+      
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
            // driver.quit();
         }
+        //extentReports.endTest(logger);
+        extentReports.flush();
+ 
     }
     
     
