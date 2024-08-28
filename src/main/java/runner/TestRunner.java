@@ -22,19 +22,15 @@ public class TestRunner {
 
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
-
 				Main.run(new String[] { "classpath:features", "-g", "stepDefinitions", "-g", "runner",
 						"-t","@youtubeAutomation",
 						"-p", "pretty",
 						"-p", "html:target/cucumber-reports.html",
 						"-m"
 				}
-
-						, Thread.currentThread().getContextClassLoader());
+				, Thread.currentThread().getContextClassLoader());
 				//reports.flush();
-
 				System.out.println("Reports done");
-			
 		} catch (Throwable e) {
 			System.out.println("Reports not done");
 			e.printStackTrace();
