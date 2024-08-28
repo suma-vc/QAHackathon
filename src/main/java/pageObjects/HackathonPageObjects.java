@@ -2,7 +2,7 @@ package pageObjects;
 
 import org.openqa.selenium.By;
 
-public class YouTubePageObjects {
+public class HackathonPageObjects {
 public static  By videoTab=By.xpath("//div[text()=\"Videos\"]");
 public static  By searchBox=By.name("search_query");
 public static  By channelLink=By.partialLinkText("STeP-IN Forum");

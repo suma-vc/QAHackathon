@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageObjects.YouTubePageObjects;
+import pageObjects.HackathonPageObjects;
 import utilities.CommonUtility;
 
 
@@ -48,20 +48,20 @@ public class YoutubeStepDef {
 
 	@When("Search for {string}")
 	public void search_for(String value) {
-		  WebElement searchBox = driver.findElement(YouTubePageObjects.searchBox);
+		  WebElement searchBox = driver.findElement(HackathonPageObjects.searchBox);
           searchBox.sendKeys(value);
      searchBox.sendKeys(org.openqa.selenium.Keys.RETURN);
 	}
 
 	@When("Open {string} channel")
 	public void open_channel(String channel) {
-		  WebElement channelLink = driver.findElement(YouTubePageObjects.channelLink);
+		  WebElement channelLink = driver.findElement(HackathonPageObjects.channelLink);
           channelLink.click();
 	}
 
 	@When("Navigate to {string} tab")
 	public void navigate_to_tab(String string) {
-		 WebElement videosTab = driver.findElement(YouTubePageObjects.videoTab);
+		 WebElement videosTab = driver.findElement(HackathonPageObjects.videoTab);
          videosTab.click();
 	}
 
@@ -77,7 +77,7 @@ public class YoutubeStepDef {
 		 boolean videoFound = false;
          try {
 			while (!videoFound) {
-			     List<WebElement> videos = driver.findElements(YouTubePageObjects.videoTitles);
+			     List<WebElement> videos = driver.findElements(HackathonPageObjects.videoTitles);
 			     for (WebElement video : videos) {
 			         if (video.getAttribute("title").contains(videoName)) {
 			             video.getLocation(); // Scroll into view
@@ -134,15 +134,15 @@ public class YoutubeStepDef {
 
 	@Then("Change the video quality to {string}")
 	public void change_the_video_quality_to(String string) {
-		 driver.findElement(YouTubePageObjects.settingsbtn).click();
+		 driver.findElement(HackathonPageObjects.settingsbtn).click();
          
-         driver.findElement(YouTubePageObjects.qualityMenu).click();
+         driver.findElement(HackathonPageObjects.qualityMenu).click();
           
 	}
 
 	@When("Get and list names of all upcoming videos")
 	public void get_and_list_names_of_all_upcoming_videos() {
-		 List<WebElement> upcomingVideos = driver.findElements(YouTubePageObjects.upComingVideoTitles);
+		 List<WebElement> upcomingVideos = driver.findElements(HackathonPageObjects.upComingVideoTitles);
           upcomingVideoNames = upcomingVideos.stream()
              .map(WebElement::getText)
              .collect(Collectors.toList());

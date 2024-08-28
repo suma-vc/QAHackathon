@@ -3,27 +3,34 @@ package qaHackathon;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.poi.util.SystemOutLogger;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.appium.java_client.android.AndroidDriver;
+import utilities.SeleniumUtility;
 
 
 
 
 
 public class AppiumAutomation {
+public Map AppiumTest() {
+	
 
-	public static void main(String[] args) {
+	Map<String, String> map = new HashMap<>();
+		SeleniumUtility util= new SeleniumUtility();
 		AndroidDriver driver;
 		final String PLATFORM_ANDROID = "Android";
 		final String PLATFORM_IOS = "iOS";
-	//	AppiumDriver driver;
-		// TODO Auto-generated method stub
-		// driver=	MobileDriver.launchMobileWebApp("Android", "emulator-5554", "Chrome");
-	//	driver.get("https://www.youtube.com");
-		
+	
+	
 		DesiredCapabilities caps = new DesiredCapabilities();
 		
 			try {
@@ -35,21 +42,33 @@ public class AppiumAutomation {
 					caps.setCapability("platformVersion", "Android 15");
 					caps.setCapability("deviceName", "emulator-5556");
 					//caps.setCapability(CapabilityType.BROWSER_NAME, "Chrome");
-					caps.setCapability("appPackage", "com.android.chrome");
-					caps.setCapability("appActivity", "com.google.android.apps.chrome.Main");
+					caps.setCapability("appPackage", "com.dharma.stepin");
+					caps.setCapability("appActivity", "com.dharma.stepin.MainActivity");
 					//caps.setCapability("chromedriver_autodownload", true);
 					caps.setCapability("automationName",  "UiAutomator2");
-					 caps.setCapability("appium:chromeOptions", new HashMap<String, Object>() {{
-				            put("w3c", true);
-					    }});
+					
 					driver = new AndroidDriver(appiumServerURL, caps);
+driver.findElement(By.xpath("//android.widget.Button")).click();
+Thread.sleep(3000);
+List<WebElement> products =driver.findElements(By.xpath("//android.view.View//android.widget.TextView"));
 
-					driver.get("https://www.youtube.com");
+System.out.println(products.size());
+			String productName=	products.get(0).getText();
+			String description =	products.get(1).getText();
+			String price=	products.get(2).getText();
+		
+			map.put("productName", productName);
+			map.put("description", description);
+			map.put("price", price);
+				System.out.println(productName);
+				System.out.println(description);
+				System.out.println(price);
 }
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return map;
 
 }
 }
