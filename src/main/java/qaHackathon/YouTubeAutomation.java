@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+
 import pageObjects.YouTubePageObjects;
 import utilities.CommonUtility;
 
@@ -37,7 +38,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.remote.DesiredCapabilities;
+
 import org.apache.commons.io.IOUtils;
 import java.nio.charset.StandardCharsets; // Added import statement
 
@@ -74,11 +75,13 @@ public class YouTubeAutomation {
     	
         System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
 
-       // ChromeOptions options = new ChromeOptions();
-    //    options.addArguments("--headless");  // Run in headless mode
+        ChromeOptions options = new ChromeOptions();
+       // options.addArguments("--headless");  // Run in headless mode
         
-     //   WebDriver driver = new ChromeDriver(options);	
-        WebDriver driver = new ChromeDriver();	
+        WebDriver driver = new ChromeDriver(options);	
+       // WebDrivers wd= new WebDrivers();
+      //  WebDriver   driver=wd.chromeBrowserLaunch();
+      //  WebDriver driver = new ChromeDriver();	
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         
         try {

@@ -4,6 +4,10 @@
   <artifactId>qaHackathon</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>qaHackathon</name>
+  <properties>
+  <maven.compiler.source>1.8</maven.compiler.source>
+  <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
   <dependencies>
     <!-- Selenium Java dependency -->
     <dependency>
@@ -11,7 +15,13 @@
         <artifactId>selenium-java</artifactId>
         <version>4.15.0</version>
     </dependency>
- 
+ <!-- JSoup for web scraping -->
+    <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>1.16.1</version> <!-- Check for the latest version -->
+    </dependency>
+
     <!-- HttpClient dependency -->
     <dependency>
         <groupId>org.apache.httpcomponents</groupId>
@@ -92,17 +102,13 @@
     <groupId>io.appium</groupId>
     <artifactId>java-client</artifactId>
     <version>9.0.0</version>
-</dependency>
- <dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-jcl</artifactId>
-    <version>1.7.5</version>
-</dependency>     
+</dependency>   
 <dependency>
     <groupId>org.slf4j</groupId>
     <artifactId>slf4j-api</artifactId>
     <version>1.7.5</version>
 </dependency>
+
 <dependency>
     <groupId>com.sun.mail</groupId>
     <artifactId>jakarta.mail</artifactId>
