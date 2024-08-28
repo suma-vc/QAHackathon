@@ -24,14 +24,10 @@ public class TestRunner {
 
 
 				Main.run(new String[] { "classpath:features", "-g", "stepDefinitions", "-g", "runner",
-
-					
-						 "-t","@youtubeAutomation",
-
+						"-t","@youtubeAutomation",
 						"-p", "pretty",
 						"-p", "html:target/cucumber-reports.html",
 						"-m"
-
 				}
 
 						, Thread.currentThread().getContextClassLoader());
