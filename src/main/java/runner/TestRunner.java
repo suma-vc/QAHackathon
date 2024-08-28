@@ -23,7 +23,7 @@ public class TestRunner {
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
 
-				Main.run(new String[] { "classpath:/src/main/resources/features", "-g", "stepDefinitions", "-g", "runner",
+				Main.run(new String[] { "classpath:src/main/resources/features", "-g", "src/main/java/stepDefinitions", "-g", "runner",
 						"-t","@youtubeAutomation",
 						"-p", "pretty",
 						"-p", "html:target/cucumber-reports.html",
