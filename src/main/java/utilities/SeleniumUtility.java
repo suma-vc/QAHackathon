@@ -398,7 +398,7 @@ public class SeleniumUtility {
 			Set<String> totalwindows = driver.getWindowHandles();
 			for (String window : totalwindows)
 			{
-				if (window.equalsIgnoreCase(currentWindow))
+				if (!window.equalsIgnoreCase(currentWindow))
 				{
 					driver.switchTo().window(window);
 					logger.info("Successfully navigated to Newly opened window");
